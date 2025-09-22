@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:0; background: #0f172a; color: #e2e8f0; }
+      header { display:flex; justify-content:space-between; align-items:center; padding: 24px; }
+      a.btn { background:#22c55e; color:white; padding:10px 16px; border-radius:10px; text-decoration:none; font-weight:600; }
+      a.btn.red { background:#ef4444; }
+      .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:16px; padding:24px; }
+      .card { background:#111827; padding:16px; border-radius:12px; border:1px solid #1f2937; }
+      .card img { border-radius:8px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>Welcome, <%= user.username %></strong>
+      <div>
+        <a href="/" class="btn">Home</a>
+        <a href="/logout" class="btn red" style="margin-left:8px;">Logout</a>
+      </div>
+    </header>
+    <main>
+      <div class="grid">
+        <% guilds.forEach(g => { %>
+          <div class="card">
+            <img src="<%= g.iconUrl || '/static/placeholder-guild.png' %>" width="48" onerror="this.src='/static/placeholder-guild.png'" />
+            <h3><%= g.name %></h3>
+            <a href="/guild/<%= g.id %>" class="btn" style="margin-top:8px; display:inline-block;">Manage</a>
+          </div>
+        <% }) %>
+      </div>
+    </main>
+  </body>
+  </html>
+

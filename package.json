@@ -1,0 +1,52 @@
+{
+  "name": "pro-discord-bot",
+  "version": "1.0.0",
+  "description": "Professional Discord bot with web dashboard (JS + discord.js + Express + Prisma)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev:bot": "nodemon src/index.js",
+    "dev:web": "nodemon src/web/server.js",
+    "dev": "concurrently -n bot,web -c blue,green \"npm:dev:bot\" \"npm:dev:web\"",
+    "start": "node src/index.js",
+    "start:web": "node src/web/server.js",
+    "deploy:commands": "node scripts/deploy-commands.js",
+    "db:push": "prisma db push",
+    "prisma:generate": "prisma generate",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "dashboard",
+    "discord.js",
+    "express",
+    "prisma"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dayjs": "^1.11.13",
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
+    "ms": "^2.1.3",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "eslint": "^9.33.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
+    "prisma": "^6.14.0"
+  }
+}

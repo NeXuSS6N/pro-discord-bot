@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  discordId   String   @unique
+  username    String
+  discriminator String?
+  avatar      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  inventories Inventory[]
+  profiles    Profile?
+}
+
+model Guild {
+  id         String   @id @default(cuid())
+  guildId    String   @unique
+  name       String
+  icon       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  settings   GuildSettings?
+}
+
+model GuildSettings {
+  id                String  @id @default(cuid())
+  guild             Guild   @relation(fields: [guildId], references: [guildId])
+  guildId           String  @unique
+  prefix            String  @default("/")
+  locale            String  @default("en")
+  welcomeChannelId  String?
+  logChannelId      String?
+  modRoleId         String?
+  adminRoleId       String?
+  welcomeEnabled    Boolean @default(true)
+  economyEnabled    Boolean @default(true)
+  moderationEnabled Boolean @default(true)
+  suggestionChannelId String?
+  welcomeMessage    String? @default("Welcome {user} to {guild}!")
+  dailyRewardAmount Int     @default(250)
+}
+
+model Inventory {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  items     Json    @default("[]")
+  gold      Int     @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @unique
+  xp        Int     @default(0)
+  level     Int     @default(1)
+  bio       String? 
+  marriedTo String?
+  lastDailyAt DateTime?
+  lastWorkAt  DateTime?
+}
+
+model Warning {
+  id                  String   @id @default(cuid())
+  guildId             String
+  targetDiscordId     String
+  moderatorDiscordId  String
+  reason              String?
+  createdAt           DateTime @default(now())
+}
+
+model Suggestion {
+  id               String   @id @default(cuid())
+  guildId          String
+  authorDiscordId  String
+  content          String
+  status           String   @default("pending")
+  messageId        String?
+  createdAt        DateTime @default(now())
+}
+
+model CommandConfig {
+  id        String  @id @default(cuid())
+  guildId   String
+  name      String
+  enabled   Boolean @default(true)
+  cooldownSeconds Int @default(0)
+  requiredRoleId String?
+  channelId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([guildId, name])
+}
+
+model StoreItem {
+  id          String   @id @default(cuid())
+  guildId     String
+  name        String
+  price       Int      @default(0)
+  description String?
+  emoji       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([guildId, name])
+}
